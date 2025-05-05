@@ -1,19 +1,22 @@
 import './App.css'
-import { routes } from './routes/routes';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Login from '@components/Login'
+import MainLayout from '@components/layouts/MainLayout'
+import Task from '@tasks/Index'
+import '@styles/Login.css'
 
 function App() {
 
   return (
     <>
       <BrowserRouter>
-
-          <Routes>
-            {routes.map(({ path, element }, index) => (
-              <Route key={index} path={path} element={element} />
-            ))}
-          </Routes>
-
+        <Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='/' element={<MainLayout />} />
+          <Route element={<MainLayout />}>
+            <Route path="/task" element={<Task />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
     </>
   )

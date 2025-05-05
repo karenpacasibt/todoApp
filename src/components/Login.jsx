@@ -4,7 +4,8 @@ import '../stylesheets/Login.css'
 
 const Login = () => {
     return (
-        <Card className="login-card shadow-lg">
+        <div className='div-login'>
+            <Card className="login-card shadow-lg">
             <Card.Body>
                 <h2 className="text-center mb-4">Login</h2>
                 <Form>
@@ -31,6 +32,7 @@ const Login = () => {
                 </div>
             </Card.Body>
         </Card>
+        </div>
     );
 };
 
