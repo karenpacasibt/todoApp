@@ -7,8 +7,8 @@ class TagService {
         const { data } = await api.get(TAG_ROUTE);
         return data;
     }
-
-    async getOne(id) {
+    
+    async get(id) {
         const { data } = await api.get(`${TAG_ROUTE}/${id}`);
         return data;
     }

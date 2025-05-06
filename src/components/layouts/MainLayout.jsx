@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../main/Navbar";
 import Sidebar from "../main/Sidebar";
 import Footer from "../main/Footer";
-import '@styles/Layout.css'
 
 export default function MainLayout() {
     return (
@@ -10,7 +9,7 @@ export default function MainLayout() {
             <Navbar />
             <div className="flex d-flex">
                 <Sidebar />
-                <div className="layout-content">
+                <div className="layout-content w-100">
                     <Outlet />
                     <Footer />
                 </div>
