@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from '@components/Login'
 import MainLayout from '@components/layouts/MainLayout'
 import Task from '@tasks/Index'
+import Tag from '@tags/Index'
 import '@styles/Login.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path='/' element={<MainLayout />} />
           <Route element={<MainLayout />}>
             <Route path="/task" element={<Task />} />
+            <Route path="/tag" element={<Tag />} />
           </Route>
         </Routes>
       </BrowserRouter>
