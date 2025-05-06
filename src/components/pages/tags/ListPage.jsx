@@ -33,7 +33,7 @@ function Tag() {
             <Table>
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
+                        <th className="col-md-1" scope="col">#</th>
                         <th className="col-md-6" scope="col">Tag name</th>
                         <th scope="col">Action</th>
                     </tr>
@@ -44,10 +44,10 @@ function Tag() {
                             <td>{tag.id}</td>
                             <td>{tag.name}</td>
                             <td>
-                                <Link to={`/tag/edit/${tag.id}`}>
+                                <Link to={`#`}>
                                     <Button size="sm" variant="warning" className="me-2"><i className="bi bi-pencil-fill"></i></Button>
                                 </Link>
-                                <Link to={`/tag/${tag.id}`}>
+                                <Link to={`#`}>
                                     <Button size="sm" variant="primary" className="me-2"><i className="bi bi-eye-fill"></i></Button>
                                 </Link>
                                 <Button size="sm" variant="danger"><i className="bi bi-trash-fill"></i></Button>
