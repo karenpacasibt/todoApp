@@ -13,6 +13,8 @@ function Tag() {
         TagService.getAll()
             .then(data => { setTags(data.data ?? data); })
             .catch(err => console.error(err));
+            // TODO: definir comportamiento cuando falla en la carga
+            // PAGINAR EN EL BACKEND EL TAG y categories, que se mantenga, autocompletar , cargar 
     }, []);
 
     const totalPages = Math.ceil(tags.length / tagsPerPage);
