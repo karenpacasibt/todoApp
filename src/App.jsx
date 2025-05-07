@@ -19,6 +19,7 @@ function App() {
             <Route path="/task" element={<Task />} />
             <Route path="/tag" element={<Tag />} />
             <Route path='/tag/create' element={<TagForm />} />
+            <Route path='/tag/edit/:id' element={<TagForm />} />
           </Route>
         </Routes>
       </BrowserRouter>
