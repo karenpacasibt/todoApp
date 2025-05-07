@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from '@components/Login'
 import MainLayout from '@components/layouts/MainLayout'
 import Task from '@tasks/Index'
-import Tag from '@tags/Index'
+import Tag from '@tags/ListPage'
 import '@styles/Login.css'
 
 function App() {
