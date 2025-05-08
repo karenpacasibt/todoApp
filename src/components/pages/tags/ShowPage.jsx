@@ -13,6 +13,7 @@ export default function ShowPage() {
         if (!id) return;
         TagService.get(id)
             .then(({ data }) => {
+
                 setTag(data);
                 setLoading(false);
             })
@@ -25,7 +26,6 @@ export default function ShowPage() {
             });
     }, [id, navigate]);
     if (loading) return <p className="text-center mt-5">Cargando...</p>;
-
     return (
         <div className="w-75 m-auto mt-5 bg-white p-5 rounded shadow">
             <h3 className="text-center mb-4">Información de la Etiqueta</h3>
