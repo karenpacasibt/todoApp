@@ -5,6 +5,7 @@ import MainLayout from '@components/layouts/MainLayout'
 import Task from '@tasks/Index'
 import Tag from '@tags/ListPage'
 import TagForm from '@tags/FormPage'
+import TagShow from '@tags/ShowPage'
 import '@styles/Login.css'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/tag" element={<Tag />} />
             <Route path='/tag/create' element={<TagForm />} />
             <Route path='/tag/edit/:id' element={<TagForm />} />
+            <Route path='/tag/:id' element={<TagShow />} />
           </Route>
         </Routes>
       </BrowserRouter>
