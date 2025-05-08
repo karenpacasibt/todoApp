@@ -1,4 +1,4 @@
-import { Button, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom'
 import TagService from '@services/tagService';
 import { useEffect, useState } from 'react';
@@ -7,8 +7,13 @@ function FormPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ name: '' });
+    const [tags, setTags] = useState([]);
+    const [error, setError] = useState('');
 
     useEffect(() => {
+        TagService.getAll().then(data => {
+            setTags(data.data ?? data);
+        }).catch(err => console.error('Error al obtener los tags:', err));
         if (id) {
             TagService.get(id).then(response => {
                 setFormData({ name: response.data.name });
@@ -21,11 +26,20 @@ function FormPage() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        setError('');
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        const nameNormalized = formData.name.trim().toLowerCase();
+        const alreadyExists = tags.some(tag =>
+            tag.name.trim().toLowerCase() === nameNormalized &&
+            tag.id.toString() !== id
+        );
+        if (alreadyExists) {
+            setError('Ya existe una etiqueta con ese nombre.');
+            return;
+        }
         const request = id
             ? TagService.update(formData, id)
             : TagService.store(formData);
@@ -33,6 +47,7 @@ function FormPage() {
             .then(() => navigate('/tag'))
             .catch(error => {
                 console.error("Error al guardar la etiqueta:", error);
+                setError('Error al guardar la etiqueta.');
             });
     };
 
@@ -46,7 +61,7 @@ function FormPage() {
                     onChange={handleChange}
                     required
                 />
-
+                {error && <Alert variant="danger">{error}</Alert>}
             </Form.Group>
             <div className="text-center">
                 <Button variant="primary" type="submit">{id ? 'Actualizar' : 'Crear'}</Button>
