@@ -4,27 +4,31 @@ import TagService from '@services/tagService';
 import { useEffect, useState } from 'react';
 
 function FormPage() {
-    const [name, setName] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
+    const [formData, setFormData] = useState({ name: '' });
 
     useEffect(() => {
         if (id) {
             TagService.get(id).then(response => {
-                setName(response.data.name);
+                setFormData({ name: response.data.name });
             }).catch(error => {
                 console.error('Error al cargar la etiqueta:', error);
             });
         }
     }, [id]);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = { name };
 
         const request = id
-            ? TagService.update(data, id)
-            : TagService.store(data);
+            ? TagService.update(formData, id)
+            : TagService.store(formData);
         request
             .then(() => navigate('/tag'))
             .catch(error => {
@@ -37,10 +41,12 @@ function FormPage() {
             <h3 className='text-center mb-4'>{id ? 'Editar' : 'Crear'} Etiqueta</h3>
             <Form.Group className="mb-3">
                 <Form.Label>Nombre la etiqueta</Form.Label>
-                <Form.Control type="text" placeholder="Ingrese la etiqueta" value={name}
-                    onChange={(e) => setName(e.target.value)}
+                <Form.Control type="text" placeholder="Ingrese la etiqueta" name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     required
                 />
+
             </Form.Group>
             <div className="text-center">
                 <Button variant="primary" type="submit">{id ? 'Actualizar' : 'Crear'}</Button>
