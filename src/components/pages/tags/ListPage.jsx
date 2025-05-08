@@ -44,7 +44,7 @@ function Tag() {
                             <td>{tag.id}</td>
                             <td>{tag.name}</td>
                             <td>
-                                <Link to={`#`}>
+                                <Link to={`/tag/edit/${tag.id}`}>
                                     <Button size="sm" variant="warning" className="me-2"><i className="bi bi-pencil-fill"></i></Button>
                                 </Link>
                                 <Link to={`#`}>
