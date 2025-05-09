@@ -28,7 +28,7 @@ const Sidebar = () => {
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/category" className="nav-link">
+          <NavLink to="/" className="nav-link">
             <i className="bi bi-bookmark-check-fill me-2"></i>
             {!collapsed && 'Categories'}
           </NavLink>
