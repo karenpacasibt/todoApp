@@ -26,7 +26,7 @@ function Category() {
 
     return (
         <div className='w-75 m-auto mt-5 bg-white d-flex justify-content-center flex-column p-5'>
-            <Link to="#">
+            <Link to="/category/create">
                 <Button variant="success">+ New Category</Button>
             </Link>
             <h2>Listado de Category</h2>
