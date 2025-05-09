@@ -47,7 +47,7 @@ function Category() {
                                 <Link to={`/category/edit/${category.id}`}>
                                     <Button size="sm" variant="warning" className="me-2"><i className="bi bi-pencil-fill"></i></Button>
                                 </Link>
-                                <Link to={`#`}>
+                                <Link to={`/category/${category.id}`}>
                                     <Button size="sm" variant="primary" className="me-2"><i className="bi bi-eye-fill"></i></Button>
                                 </Link>
                                 <Button size="sm" variant="danger"><i className="bi bi-trash-fill"></i></Button>
