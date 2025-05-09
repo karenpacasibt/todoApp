@@ -8,21 +8,24 @@ import DeleteModal from './DeleteModal'
 function Tag() {
     const [tags, setTags] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const tagsPerPage = 10;
+    const [pagination, setPagination] = useState({});
+
+    const fetchTags = (page = 1) => {
+        TagService.getAll(page)
+            .then(data => {
+                setTags(data.data);
+                setPagination(data);
+                setCurrentPage(data.current_page);
+            })
+            .catch(err => console.error('Error al cargar los tags:', err));
+    };
 
     useEffect(() => {
-        TagService.getAll()
-            .then(data => { setTags(data.data ?? data); })
-            .catch(err => console.error(err));
+        fetchTags(currentPage);
     }, []);
 
-    const totalPages = Math.ceil(tags.length / tagsPerPage);
-    const indexOfLastTag = currentPage * tagsPerPage;
-    const indexOfFirstTag = indexOfLastTag - tagsPerPage;
-    const currentTags = tags.slice(indexOfFirstTag, indexOfLastTag);
-
     const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        fetchTags(pageNumber);
     };
 
     const [tagToDelete, setTagToDelete] = useState(null);
@@ -40,6 +43,7 @@ function Tag() {
         try {
             await TagService.delete(tagToDelete.id);
             handleCloseModal();
+            fetchTags(currentPage);
             setTags(prev => prev.filter(tag => tag.id !== tagToDelete.id));
 
         } catch (error) {
@@ -62,7 +66,7 @@ function Tag() {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentTags.map((tag, index) => (
+                    {tags.map((tag) => (
                         <tr key={tag.id}>
                             <td>{tag.id}</td>
                             <td>{tag.name}</td>
@@ -80,8 +84,8 @@ function Tag() {
                 </tbody>
             </Table>
             <Paginate
-                currentPage={currentPage}
-                totalPages={totalPages}
+                currentPage={pagination.current_page}
+                totalPages={pagination.last_page}
                 onPageChange={handlePageChange}
             />
             <DeleteModal
