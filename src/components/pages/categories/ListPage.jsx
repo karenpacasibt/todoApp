@@ -1,27 +1,66 @@
 import { useEffect, useState } from 'react';
 import CategoryService from '@services/categoryService';
+import { Button, Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import Paginate from '../../layouts/Paginate';
 
 function Category() {
     const [categories, setCategories] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const categoriesPerPage = 8;
 
     useEffect(() => {
         CategoryService.getAll()
             .then(data => { setCategories(data.data ?? data); })
             .catch(err => console.error(err));
-        CategoryService.get(1).then(data => console.log('getOne:', data));
-        CategoryService.store({ name: 'nueva categoria' }).then(data => console.log('store:', data));
-        CategoryService.update({ name: 'Compras por el centro' }, 6).then(data => console.log('update:', data));
-        //CategoryService.delete(26).then(data => console.log('delete:', data));
     }, []);
 
+    const totalPages = Math.ceil(categories.length / categoriesPerPage);
+    const indexOfLastCategory = currentPage * categoriesPerPage;
+    const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
+    const currentCategories = categories.slice(indexOfFirstCategory, indexOfLastCategory);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
     return (
-        <div>
-            <h2>Categories:</h2>
-            <ul>
-                {categories.map(category => (
-                    <li key={category.id}>{category.name}</li>
-                ))}
-            </ul>
+        <div className='w-75 m-auto mt-5 bg-white d-flex justify-content-center flex-column p-5'>
+            <Link to="#">
+                <Button variant="success">+ New Category</Button>
+            </Link>
+            <h2>Listado de Category</h2>
+            <Table>
+                <thead>
+                    <tr>
+                        <th className="col-md-1" scope="col">#</th>
+                        <th className="col-md-6" scope="col">Category name</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {currentCategories.map((category) => (
+                        <tr key={category.id}>
+                            <td>{category.id}</td>
+                            <td>{category.name}</td>
+                            <td>
+                                <Link to={`#`}>
+                                    <Button size="sm" variant="warning" className="me-2"><i className="bi bi-pencil-fill"></i></Button>
+                                </Link>
+                                <Link to={`#`}>
+                                    <Button size="sm" variant="primary" className="me-2"><i className="bi bi-eye-fill"></i></Button>
+                                </Link>
+                                <Button size="sm" variant="danger"><i className="bi bi-trash-fill"></i></Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+            <Paginate
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 }
