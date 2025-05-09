@@ -3,8 +3,8 @@ import api from './api';
 const TAG_ROUTE = 'tag';
 
 class TagService {
-    async getAll() {
-        const { data } = await api.get(TAG_ROUTE);
+    async getAll(page=1) {
+        const { data } = await api.get(`${TAG_ROUTE}?page=${page}`);
         return data;
     }
     
