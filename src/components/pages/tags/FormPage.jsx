@@ -1,4 +1,4 @@
-import { Button, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom'
 import TagService from '@services/tagService';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ function FormPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ name: '' });
+    const [error, setError] = useState('');
 
     useEffect(() => {
         if (id) {
@@ -21,11 +22,20 @@ function FormPage() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        setError('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        try {
+            await axios.post('/api/tag', { name });
+        } catch (error) {
+            if (error.response?.status === 422) {
+                setError(error.response.data.error);
+            } else {
+                console.error(error.response?.data?.message || 'Error inesperado');
+            }
+        }
         const request = id
             ? TagService.update(formData, id)
             : TagService.store(formData);
@@ -33,7 +43,9 @@ function FormPage() {
             .then(() => navigate('/tag'))
             .catch(error => {
                 console.error("Error al guardar la etiqueta:", error);
+                setError('Error al guardar la etiqueta.');
             });
+
     };
 
     return (
@@ -46,7 +58,7 @@ function FormPage() {
                     onChange={handleChange}
                     required
                 />
-
+                {error && <Alert variant="danger">{error}</Alert>}
             </Form.Group>
             <div className="text-center">
                 <Button variant="primary" type="submit">{id ? 'Actualizar' : 'Crear'}</Button>
