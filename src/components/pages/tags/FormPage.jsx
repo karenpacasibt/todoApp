@@ -7,13 +7,9 @@ function FormPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ name: '' });
-    const [tags, setTags] = useState([]);
     const [error, setError] = useState('');
 
     useEffect(() => {
-        TagService.getAll().then(data => {
-            setTags(data.data ?? data);
-        }).catch(err => console.error('Error al obtener los tags:', err));
         if (id) {
             TagService.get(id).then(response => {
                 setFormData({ name: response.data.name });
@@ -29,16 +25,16 @@ function FormPage() {
         setError('');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const nameNormalized = formData.name.trim().toLowerCase();
-        const alreadyExists = tags.some(tag =>
-            tag.name.trim().toLowerCase() === nameNormalized &&
-            tag.id.toString() !== id
-        );
-        if (alreadyExists) {
-            setError('Ya existe una etiqueta con ese nombre.');
-            return;
+        try {
+            await axios.post('/api/tag', { name });
+        } catch (error) {
+            if (error.response?.status === 422) {
+                setError(error.response.data.error);
+            } else {
+                console.error(error.response?.data?.message || 'Error inesperado');
+            }
         }
         const request = id
             ? TagService.update(formData, id)
@@ -49,6 +45,7 @@ function FormPage() {
                 console.error("Error al guardar la etiqueta:", error);
                 setError('Error al guardar la etiqueta.');
             });
+
     };
 
     return (
