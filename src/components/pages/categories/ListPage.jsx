@@ -46,21 +46,21 @@ function Category() {
             setCategories(prev => prev.filter(category => category.id !== categoryToDelete.id));
 
         } catch (error) {
-            console.error('Error al eliminar la etiqueta:', error);
+            console.error('Error al eliminar la categoria:', error);
         }
     };
     return (
         <div className='w-75 m-auto mt-5 bg-white d-flex justify-content-center flex-column p-5'>
             <Link to="/category/create">
-                <Button variant="success">+ New Category</Button>
+                <Button variant="success">+ Nueva Categoria</Button>
             </Link>
-            <h2>Listado de Category</h2>
+            <h2>Listado de Categorias</h2>
             <Table>
                 <thead>
                     <tr>
-                        <th className="col-md-1" scope="col">#</th>
-                        <th className="col-md-6" scope="col">Category name</th>
-                        <th scope="col">Action</th>
+                        <th className="col-md-1" scope="col">ID</th>
+                        <th className="col-md-6" scope="col">Nombre categoria</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
