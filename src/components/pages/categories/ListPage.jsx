@@ -9,21 +9,24 @@ function Category() {
     const [categories, setCategories] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [categoryToDelete, setCategoryToDelete] = useState(null);
-    const categoriesPerPage = 8;
+    const [pagination, setPagination] = useState({});
+
+    const fetchCategories = (page = 1) => {
+        CategoryService.getAll(page)
+            .then(data => {
+                setCategories(data.data);
+                setPagination(data);
+                setCurrentPage(data.current_page);
+            })
+            .catch(err => console.error('Error al cargar las categorias:', err));
+    };
 
     useEffect(() => {
-        CategoryService.getAll()
-            .then(data => { setCategories(data.data ?? data); })
-            .catch(err => console.error(err));
+        fetchCategories(currentPage);
     }, []);
 
-    const totalPages = Math.ceil(categories.length / categoriesPerPage);
-    const indexOfLastCategory = currentPage * categoriesPerPage;
-    const indexOfFirstCategory = indexOfLastCategory - categoriesPerPage;
-    const currentCategories = categories.slice(indexOfFirstCategory, indexOfLastCategory);
-
     const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        fetchCategories(pageNumber);
     };
 
     const handleOpenModal = (category) => {
@@ -39,6 +42,7 @@ function Category() {
         try {
             await CategoryService.delete(categoryToDelete.id);
             handleCloseModal();
+            fetchCategories(currentPage);
             setCategories(prev => prev.filter(category => category.id !== categoryToDelete.id));
 
         } catch (error) {
@@ -60,7 +64,7 @@ function Category() {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentCategories.map((category) => (
+                    {categories.map((category) => (
                         <tr key={category.id}>
                             <td>{category.id}</td>
                             <td>{category.name}</td>
@@ -78,8 +82,8 @@ function Category() {
                 </tbody>
             </Table>
             <Paginate
-                currentPage={currentPage}
-                totalPages={totalPages}
+                currentPage={pagination.current_page}
+                totalPages={pagination.last_page}
                 onPageChange={handlePageChange}
             />
             <DeleteModal

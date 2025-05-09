@@ -3,11 +3,11 @@ import api from './api';
 const CATEGORY_ROUTE = 'category';
 
 class CategoryService {
-    async getAll() {
-        const { data } = await api.get(CATEGORY_ROUTE);
+    async getAll(page = 1) {
+        const { data } = await api.get(`${CATEGORY_ROUTE}?page=${page}`);
         return data;
     }
-    
+
     async get(id) {
         const { data } = await api.get(`${CATEGORY_ROUTE}/${id}`);
         return data;
