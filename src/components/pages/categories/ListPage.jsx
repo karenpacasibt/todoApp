@@ -44,7 +44,7 @@ function Category() {
                             <td>{category.id}</td>
                             <td>{category.name}</td>
                             <td>
-                                <Link to={`#`}>
+                                <Link to={`/category/edit/${category.id}`}>
                                     <Button size="sm" variant="warning" className="me-2"><i className="bi bi-pencil-fill"></i></Button>
                                 </Link>
                                 <Link to={`#`}>

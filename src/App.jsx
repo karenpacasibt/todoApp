@@ -21,6 +21,7 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/category" element={<Category />} />
             <Route path="/category/create" element={<CategoryForm />} />
+            <Route path="/category/edit/:id" element={<CategoryForm />} />
             <Route path="/task" element={<Task />} />
             <Route path="/tag" element={<Tag />} />
             <Route path='/tag/create' element={<TagForm />} />
