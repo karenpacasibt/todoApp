@@ -1,13 +1,14 @@
-import { Button, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom'
 import CategoryService from '@services/categoryService';
 import { useEffect, useState } from 'react';
 
 function FormPage() {
-    const [name, setName] = useState('');
+    const [error, setError] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ name: '' });
+
 
     useEffect(() => {
         if (id) {
@@ -24,15 +25,22 @@ function FormPage() {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+
         const request = id
             ? CategoryService.update(formData, id)
             : CategoryService.store(formData);
         request
             .then(() => navigate('/category'))
             .catch(error => {
-                console.error('Error al guardar la categoria: ', error);
+                if (error.response?.status === 422) {
+                    const validation = error.response.data.errors;
+                    setError(validation.name?.[0] || 'Error de validación');
+                } else {
+                    console.error('Error inesperado al guardar la categoría:', error);
+                }
             });
     };
 
@@ -46,6 +54,7 @@ function FormPage() {
                     onChange={handleChange}
                     required
                 />
+                {error && <Alert variant="danger">{error}</Alert>}
             </Form.Group>
             <div className="text-center">
                 <Button variant="primary" type="submit">{id ? 'Guardar' : 'Crear'}</Button>
