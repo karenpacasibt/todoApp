@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from '@components/Login'
 import MainLayout from '@components/layouts/MainLayout'
 import Task from '@tasks/ListPage'
+import TaskForm from '@tasks/FormPage'
 import Tag from '@tags/ListPage'
 import TagForm from '@tags/FormPage'
 import TagShow from '@tags/ShowPage'
@@ -25,6 +26,7 @@ function App() {
             <Route path="/category/edit/:id" element={<CategoryForm />} />
             <Route path="/category/:id" element={<CategoryShow />} />
             <Route path="/task" element={<Task />} />
+            <Route path='/task/create' element={<TaskForm />} />
             <Route path="/tag" element={<Tag />} />
             <Route path='/tag/create' element={<TagForm />} />
             <Route path='/tag/edit/:id' element={<TagForm />} />

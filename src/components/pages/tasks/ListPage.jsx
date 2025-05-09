@@ -30,14 +30,14 @@ function Task() {
       };
     return (
         <div className='w-75 m-auto mt-5 bg-white d-flex justify-content-center flex-column p-5'>
-            <Link to="#">
+            <Link to="/task/create">
                 <Button variant="success">+ Nueva Tarea</Button>
             </Link>
             <h2>Listado de Tareas</h2>
             <Table>
                 <thead>
                     <tr>
-                        <th className="col-md-1" scope="col"><i class="bi bi-check-square"></i></th>
+                        <th className="col-md-1" scope="col"><i className="bi bi-check-square"></i></th>
                         <th className="col-md-2" scope="col">Nombre Tarea</th>
                         <th className='col-md-2' scope='col'>Descripcion</th>
                         <th className='col-md-2' scope='col'>Categoria</th>
