@@ -3,10 +3,12 @@ import TaskService from '@services/taskService';
 import { Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Paginate from '../../layouts/Paginate';
+import DeleteModal from './DeleteModal';
 
 function Task() {
     const [tasks, setTasks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [taskToDelete, setTaskToDelete] = useState(null);
     const tasksPerPage = 8;
 
     useEffect(() => {
@@ -27,7 +29,28 @@ function Task() {
     const truncateText = (text, maxLength = 100) => {
         if (!text) return '';
         return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
-      };
+    };
+
+    const handleOpenModal = (task) => {
+        setTaskToDelete(task);
+    };
+
+    const handleCloseModal = () => {
+        setTaskToDelete(null);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!taskToDelete) return;
+        try {
+            await TaskService.delete(taskToDelete.id);
+            handleCloseModal();
+            setTasks(prev => prev.filter(task => task.id !== taskToDelete.id));
+
+        } catch (error) {
+            console.error('Error al eliminar la tarea:', error);
+        }
+    };
+
     return (
         <div className='w-75 m-auto mt-5 bg-white d-flex justify-content-center flex-column p-5'>
             <Link to="/task/create">
@@ -66,7 +89,7 @@ function Task() {
                                 <Link to={`/task/${task.id}`}>
                                     <Button size="sm" variant="primary" className="me-2"><i className="bi bi-eye-fill"></i></Button>
                                 </Link>
-                                <Button size="sm" variant="danger"><i className="bi bi-trash-fill"></i></Button>
+                                <Button size="sm" variant="danger" onClick={() => handleOpenModal(task)}><i className="bi bi-trash-fill"></i></Button>
                             </td>
                         </tr>
                     ))}
@@ -76,6 +99,12 @@ function Task() {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
+            />
+            <DeleteModal
+                show={!!taskToDelete}
+                onClose={handleCloseModal}
+                onConfirm={handleConfirmDelete}
+                task={taskToDelete}
             />
         </div>
     );
