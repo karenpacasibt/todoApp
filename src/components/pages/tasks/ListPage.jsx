@@ -60,7 +60,7 @@ function Task() {
                                 ))}
                             </td>
                             <td>
-                                <Link to={`#`}>
+                                <Link to={`/task/edit/${task.id}`}>
                                     <Button size="sm" variant="warning" className="me-2"><i className="bi bi-pencil-fill"></i></Button>
                                 </Link>
                                 <Link to={`#`}>

@@ -27,6 +27,7 @@ function App() {
             <Route path="/category/:id" element={<CategoryShow />} />
             <Route path="/task" element={<Task />} />
             <Route path='/task/create' element={<TaskForm />} />
+            <Route path='/task/edit/:id' element={<TaskForm />} />
             <Route path="/tag" element={<Tag />} />
             <Route path='/tag/create' element={<TagForm />} />
             <Route path='/tag/edit/:id' element={<TagForm />} />
