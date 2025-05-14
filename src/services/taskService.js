@@ -18,9 +18,9 @@ class TagService {
         return data;
     }
 
-    async update(params, id) {
+    async update(id, params) {
         const { data } = await api.put(`${TASK_ROUTE}/${id}`, params);
-        return data;
+        return data.data;
     }
 
     async delete(id) {

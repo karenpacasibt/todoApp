@@ -72,9 +72,7 @@ function FormPage() {
         } catch (error) {
             if (error.response?.status === 422) {
                 setError(error.response.data.error);
-            } else {
-                console.error(error.response?.data?.message || 'Error inesperado');
-            }
+            } 
         }
 
         const payload = {
@@ -85,7 +83,7 @@ function FormPage() {
         };
 
         const request = id
-            ? TaskService.update(payload, id)
+            ? TaskService.update(id,payload)
             : TaskService.store(payload);
 
         request

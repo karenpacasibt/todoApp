@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import TaskService from '@services/taskService';
-import { Button, Table } from 'react-bootstrap';
+import { Button, Pagination, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Paginate from '../../layouts/Paginate';
 import DeleteModal from './DeleteModal';
@@ -9,18 +9,38 @@ function Task() {
     const [tasks, setTasks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [taskToDelete, setTaskToDelete] = useState(null);
-    const tasksPerPage = 8;
+    const [paginate, setPaginate] = useState({});
+    const handleToggleStatus = async (taskId, currentStatus) => {
+        try {
+            const updatedTask = await TaskService.update(taskId, {
+                status: !currentStatus
+            });
+
+            setTasks(prev =>
+                prev.map(task =>
+                    task.id === taskId ? { ...task, status: updatedTask.status } : task
+                )
+            );
+            console.log(updatedTask);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const fetchTasks = (page = 1) => {
+        TaskService.getAll(page)
+            .then(data => {
+                setTasks(data.data);
+                setPaginate(data);
+                setCurrentPage(data.current_page);
+            })
+            .catch(err => console.error('Error al cargar las tareas:', err));
+    };
 
     useEffect(() => {
-        TaskService.getAll()
-            .then(data => { setTasks(data.data.data); })
-            .catch(err => console.error(err));
-    }, []);
-
-    const totalPages = Math.ceil(tasks.length / tasksPerPage);
-    const indexOfLastTask = currentPage * tasksPerPage;
-    const indexOfFirstTask = indexOfLastTask - tasksPerPage;
-    const currentTasks = tasks.slice(indexOfFirstTask, indexOfLastTask);
+        fetchTasks(currentPage);
+    }, [currentPage]);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -44,6 +64,7 @@ function Task() {
         try {
             await TaskService.delete(taskToDelete.id);
             handleCloseModal();
+            fetchTasks(currentPage);
             setTasks(prev => prev.filter(task => task.id !== taskToDelete.id));
 
         } catch (error) {
@@ -69,9 +90,12 @@ function Task() {
                     </tr>
                 </thead>
                 <tbody>
-                    {currentTasks.map((task) => (
+                    {tasks.map((task) => (
                         <tr key={task.id}>
-                            <td>{task.status}</td>
+                            <td><input type="checkbox"
+                                checked={task.status}
+                                onChange={() => handleToggleStatus(task.id, task.status)} />
+                            </td>
                             <td>{task.title}</td>
                             <td className='fst-italic'>{truncateText(task.description, 20)}</td>
                             <td className='fw-light'>{task.category?.name}</td>
@@ -96,8 +120,8 @@ function Task() {
                 </tbody>
             </Table>
             <Paginate
-                currentPage={currentPage}
-                totalPages={totalPages}
+                currentPage={paginate.current_page}
+                totalPages={paginate.last_page}
                 onPageChange={handlePageChange}
             />
             <DeleteModal
