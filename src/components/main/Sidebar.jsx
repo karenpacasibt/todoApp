@@ -18,7 +18,7 @@ const Sidebar = () => {
         <li className="nav-item">
           <NavLink to="/task" className="nav-link">
             <i className="bi bi-list-task me-2"></i>
-            {!collapsed && 'Task'}
+            {!collapsed && 'Tareas'}
           </NavLink>
         </li>
         <li className="nav-item">
