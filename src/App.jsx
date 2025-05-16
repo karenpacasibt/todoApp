@@ -18,7 +18,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login />} />
-          <Route path='/' element={<MainLayout />} />
+          <Route path='/me' element={<MainLayout />} />
           <Route element={<MainLayout />}>
             <Route path="/category" element={<Category />} />
             <Route path="/category/create" element={<CategoryForm />} />
