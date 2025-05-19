@@ -40,7 +40,7 @@ function Category() {
     const handleConfirmDelete = async () => {
         if (!categoryToDelete) return;
         try {
-            await CategoryService.delete(categoryToDelete.id);
+            await CategoryService.destroy(categoryToDelete.id);
             handleCloseModal();
             fetchCategories(currentPage);
             setCategories(prev => prev.filter(category => category.id !== categoryToDelete.id));

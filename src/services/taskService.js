@@ -23,7 +23,7 @@ const update = async (id, params) => {
 }
 
 const destroy = async (id) => {
-    const { data } = await api.destroy(`${TASK_ROUTE}/${id}`);
+    const { data } = await api.delete(`${TASK_ROUTE}/${id}`);
     return data;
 }
 export default {
