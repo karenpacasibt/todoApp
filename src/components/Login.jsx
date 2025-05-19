@@ -18,17 +18,6 @@ const Login = () => {
         setError('');
     };
 
-    const isPasswordValid = (password) => {
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
-        return regex.test(password);
-    };
-
-    const isFormValid = () => {
-        return credentials.email.trim() !== '' &&
-            credentials.password.trim() !== '' &&
-            isPasswordValid(credentials.password);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -73,7 +62,6 @@ const Login = () => {
                                     placeholder="Password"
                                     value={credentials.password}
                                     onChange={handleChange}
-                                    isInvalid={credentials.password && !isPasswordValid(credentials.password)}
                                 />
                                 <Button
                                     variant="outline-secondary"
@@ -82,9 +70,6 @@ const Login = () => {
                                 </Button>
                             </InputGroup>
 
-                            <Form.Control.Feedback type="invalid">
-                                La contraseña debe tener al menos 8 caracteres, incluidos mayúsculas, minúsculas y un carácter especial.
-                            </Form.Control.Feedback>
                         </Form.Group>
 
                         <div className="d-grid">
@@ -92,7 +77,6 @@ const Login = () => {
                                 variant="primary"
                                 type="submit"
                                 className="gradient-btn"
-                                disabled={!isFormValid()}
                             >
                                 Login
                             </Button>
