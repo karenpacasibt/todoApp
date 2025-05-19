@@ -27,23 +27,19 @@ function FormPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            await axios.post('/api/tag', { name });
-        } catch (error) {
-            if (error.response?.status === 422) {
-                setError(error.response.data.error);
-            } else {
-                console.error(error.response?.data?.message || 'Error inesperado');
-            }
-        }
+        setError('');
         const request = id
             ? TagService.update(formData, id)
             : TagService.store(formData);
         request
             .then(() => navigate('/tag'))
             .catch(error => {
-                console.error("Error al guardar la etiqueta:", error);
-                setError('Error al guardar la etiqueta.');
+                if (error.response?.status === 422) {
+                    const validation = error.response.data.errors;
+                    setError(validation.name?.[0] || 'Error de validación');
+                } else {
+                    console.error('Error inesperado al guardar la etiqueta:', error);
+                }
             });
 
     };

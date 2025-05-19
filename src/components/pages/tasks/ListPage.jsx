@@ -67,13 +67,13 @@ function Task() {
     const handleConfirmDelete = async () => {
         if (!taskToDelete) return;
         try {
-            await TaskService.delete(taskToDelete.id);
+            await TaskService.destroy(taskToDelete.id);
             handleCloseModal();
             fetchTasks(currentPage);
             setTasks(prev => prev.filter(task => task.id !== taskToDelete.id));
 
         } catch (error) {
-            setError('Ocurrió un error al eliminar la tarea');
+            console.error(error);
         }
     };
 

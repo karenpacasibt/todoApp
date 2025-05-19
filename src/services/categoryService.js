@@ -23,7 +23,7 @@ const update = async (params, id) => {
 }
 
 const destroy = async (id) => {
-    const { data } = await api.destroy(`${CATEGORY_ROUTE}/${id}`);
+    const { data } = await api.delete(`${CATEGORY_ROUTE}/${id}`);
     return data;
 }
 
