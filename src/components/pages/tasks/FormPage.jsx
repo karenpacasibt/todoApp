@@ -51,7 +51,16 @@ function FormPage() {
                 }
 
             } catch (error) {
-                console.error('Error al cargar datos del formulario', error);
+                const status = error.response?.status;
+                let message = 'Ocurrió un error al hacer la petición.';
+
+                if (status === 401) {
+                    message = 'No estás autorizado. Por favor, inicia sesión.';
+                } else if (status === 500) {
+                    message = 'Error interno del servidor.';
+                }
+
+                setError(message)
             }
         };
 
@@ -72,7 +81,7 @@ function FormPage() {
         } catch (error) {
             if (error.response?.status === 422) {
                 setError(error.response.data.error);
-            } 
+            }
         }
 
         const payload = {
@@ -83,7 +92,7 @@ function FormPage() {
         };
 
         const request = id
-            ? TaskService.update(id,payload)
+            ? TaskService.update(id, payload)
             : TaskService.store(payload);
 
         request

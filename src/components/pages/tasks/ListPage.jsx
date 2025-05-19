@@ -4,12 +4,14 @@ import { Button, Pagination, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Paginate from '../../layouts/Paginate';
 import DeleteModal from './DeleteModal';
+import ErrorModal from './ErrorModal';
 
 function Task() {
     const [tasks, setTasks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [taskToDelete, setTaskToDelete] = useState(null);
     const [paginate, setPaginate] = useState({});
+    const [error, setError] = useState('');
     const handleToggleStatus = async (taskId, currentStatus) => {
         try {
             const updatedTask = await TaskService.update(taskId, {
@@ -17,14 +19,25 @@ function Task() {
             });
 
             setTasks(prev =>
-                prev.map(task =>
-                    task.id === taskId ? { ...task, status: updatedTask.status } : task
-                )
+                prev.map(task => {
+                    if (task.id === taskId) {
+                        return { ...task, status: updatedTask.status };
+                    }
+                    return task;
+                })
             );
-            console.log(updatedTask);
 
         } catch (error) {
-            console.error(error);
+            const status = error.response?.status;
+            let message = 'Ocurrió un error al hacer la petición.';
+
+            if (status === 401) {
+                message = 'No estás autorizado. Por favor, inicia sesión.';
+            } else if (status === 500) {
+                message = 'error interno del servidor.';
+            }
+
+            setError(message)
         }
     };
 
@@ -74,6 +87,7 @@ function Task() {
 
     return (
         <div className='w-75 m-auto mt-5 bg-white d-flex justify-content-center flex-column p-5'>
+            <ErrorModal error={error} onClose={() => setError(null)} />
             <Link to="/task/create">
                 <Button variant="success">+ Nueva Tarea</Button>
             </Link>
