@@ -26,7 +26,6 @@ export default function ShowPage() {
                 setTask(taskRes.data);
             })
             .catch(error => {
-                console.error(error);
                 setError('Ocurrió un error al hacer cargar los datos, vuelva intertarlo después.');
             })
             .finally(() => setLoading(false));

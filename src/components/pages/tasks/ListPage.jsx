@@ -29,7 +29,6 @@ function Task() {
             );
 
         } catch (error) {
-            console.error('Ocurrio un error',error);
             setError('Ocurrió un error al hacer la petición');
         }
     };
@@ -41,7 +40,7 @@ function Task() {
                 setPaginate(data);
                 setCurrentPage(data.current_page);
             })
-            .catch(err => console.error('Error al cargar las tareas:', err));
+            .catch(err => setError('Ocurrió un error al cargar las tareas'));
     };
 
     useEffect(() => {
@@ -74,7 +73,7 @@ function Task() {
             setTasks(prev => prev.filter(task => task.id !== taskToDelete.id));
 
         } catch (error) {
-            console.error('Error al eliminar la tarea:', error);
+            setError('Ocurrió un error al eliminar la tarea');
         }
     };
 
