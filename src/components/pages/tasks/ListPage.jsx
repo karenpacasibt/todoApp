@@ -12,6 +12,7 @@ function Task() {
     const [taskToDelete, setTaskToDelete] = useState(null);
     const [paginate, setPaginate] = useState({});
     const [error, setError] = useState('');
+
     const handleToggleStatus = async (taskId, currentStatus) => {
         try {
             const updatedTask = await TaskService.update(taskId, {
@@ -28,16 +29,8 @@ function Task() {
             );
 
         } catch (error) {
-            const status = error.response?.status;
-            let message = 'Ocurrió un error al hacer la petición.';
-
-            if (status === 401) {
-                message = 'No estás autorizado. Por favor, inicia sesión.';
-            } else if (status === 500) {
-                message = 'error interno del servidor.';
-            }
-
-            setError(message)
+            console.error('Ocurrio un error',error);
+            setError('Ocurrió un error al hacer la petición');
         }
     };
 

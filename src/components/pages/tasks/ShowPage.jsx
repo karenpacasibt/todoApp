@@ -26,16 +26,8 @@ export default function ShowPage() {
                 setTask(taskRes.data);
             })
             .catch(error => {
-                const status = error.response?.status;
-                let message = 'Ocurrió un error al hacer la petición.';
-
-                if (status === 401) {
-                    message = 'No estás autorizado. Por favor, inicia sesión.';
-                } else if (status === 500) {
-                    message = 'error interno del servidor.';
-                }
-
-                setError(message)
+                console.error(error);
+                setError('Ocurrió un error al hacer cargar los datos, vuelva intertarlo después.');
             })
             .finally(() => setLoading(false));
     }, [id]);

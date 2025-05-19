@@ -12,7 +12,7 @@ function FormPage() {
     const [tags, setTags] = useState([]);
     const [formData, setFormData] = useState({ title: '', description: '', id_category: '' });
     const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedOption, setSelectedOption] = useState(null);
+
     const [error, setError] = useState('');
     const { id } = useParams();
     const navigate = useNavigate();
@@ -51,16 +51,8 @@ function FormPage() {
                 }
 
             } catch (error) {
-                const status = error.response?.status;
-                let message = 'Ocurrió un error al hacer la petición.';
-
-                if (status === 401) {
-                    message = 'No estás autorizado. Por favor, inicia sesión.';
-                } else if (status === 500) {
-                    message = 'Error interno del servidor.';
-                }
-
-                setError(message)
+                let message = 'Ocurrió un error al registrar la tarea, intenta nuevamente.';
+                setError(message);
             }
         };
 
@@ -87,8 +79,7 @@ function FormPage() {
         const payload = {
             ...formData,
             id_category: parseInt(formData.id_category),
-            tags: selectedTags.map(tag => tag.value),
-            action_suggestion: selectedOption?.value || ''
+            tags: selectedTags.map(tag => tag.value)
         };
 
         const request = id
