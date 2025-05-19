@@ -41,7 +41,7 @@ function Tag() {
     const handleConfirmDelete = async () => {
         if (!tagToDelete) return;
         try {
-            await TagService.delete(tagToDelete.id);
+            await TagService.destroy(tagToDelete.id);
             handleCloseModal();
             fetchTags(currentPage);
             setTags(prev => prev.filter(tag => tag.id !== tagToDelete.id));
