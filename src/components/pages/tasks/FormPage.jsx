@@ -10,7 +10,7 @@ import TagService from '@services/tagService';
 function FormPage() {
     const [categories, setCategories] = useState([]);
     const [tags, setTags] = useState([]);
-    const [formData, setFormData] = useState({ title: '', description: '', id_category: '' });
+    const [formData, setFormData] = useState({ title: '', description: '', category_id: '' });
     const [selectedTags, setSelectedTags] = useState([]);
 
     const [error, setError] = useState('');
@@ -40,8 +40,9 @@ function FormPage() {
                     setFormData({
                         title: task.title,
                         description: task.description,
-                        id_category: task.id_category
+                        category_id: task.category?.id || task.category_id                
                     });
+                   
 
                     const selected = task.tags.map(tag => ({
                         value: tag.id,
@@ -51,6 +52,8 @@ function FormPage() {
                 }
 
             } catch (error) {
+                console.error(error);
+                
                 let message = 'Ocurrió un error al registrar la tarea, intenta nuevamente.';
                 setError(message);
             }
@@ -68,18 +71,10 @@ function FormPage() {
         e.preventDefault();
         setError('');
 
-        try {
-            await axios.post('/api/task', { title });
-        } catch (error) {
-            if (error.response?.status === 422) {
-                setError(error.response.data.error);
-            }
-        }
-
         const payload = {
             ...formData,
-            id_category: parseInt(formData.id_category),
-            tags: selectedTags.map(tag => tag.value)
+            category_id: parseInt(formData.category_id),
+            tagIds: selectedTags.map(tag => tag.value)
         };
 
         const request = id
@@ -132,8 +127,8 @@ function FormPage() {
                 <Form.Group className="mb-3">
                     <Form.Label>Categoría</Form.Label>
                     <Form.Select
-                        name="id_category"
-                        value={formData.id_category}
+                        name="category_id"
+                        value={formData.category_id}
                         onChange={handleChange}
                         required
                     >

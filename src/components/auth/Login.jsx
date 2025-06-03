@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Form, Button, Card, Alert, InputGroup } from 'react-bootstrap';
-import '../stylesheets/Login.css';
-import UserService from '@services/userService';
+import '@styles/Login.css';
+import Auth from '@services/authService';
 import { useNavigate } from 'react-router';
 
 const Login = () => {
     const navigate = useNavigate();
-    const [credentials, setCredentials] = useState({ email: '', password: '' });
+    const [credentials, setCredentials] = useState({ mail: '', password: '' });
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
@@ -21,10 +21,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await UserService.login(credentials);
-            const token = response.token;
+            const response = await Auth.login(credentials);
+            const token = response.token;           
             localStorage.setItem('token', token);
-            navigate('/me');
+            navigate('/profile');
         } catch (error) {
             setError('The username or password are incorrect!');
             console.error('Login failed', error);
@@ -46,10 +46,10 @@ const Login = () => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Control
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={credentials.email}
+                                type="mail"
+                                name="mail"
+                                placeholder="mail"
+                                value={credentials.mail}
                                 onChange={handleChange}
                             />
                         </Form.Group>
@@ -79,6 +79,12 @@ const Login = () => {
                                 className="gradient-btn"
                             >
                                 Login
+                            </Button>
+                        </div>
+                        <div className="text-center mt-3">
+                            <span>Don't have an account? </span>
+                            <Button variant="link" onClick={() => navigate('/register')}>
+                                Create one
                             </Button>
                         </div>
                     </Form>

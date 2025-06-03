@@ -2,7 +2,7 @@ import axios from 'axios';
 import { configs } from 'eslint-plugin-react-refresh';
 
 const api = axios.create({
-  baseURL: 'http://proyecto-todolist.test/api/',
+  baseURL: 'http://127.0.0.1:3000',
   headers: {
     'Content-Type': 'application/json',
   },

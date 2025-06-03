@@ -3,6 +3,7 @@ import { Navbar, Nav, Container, Form, FormControl, Button } from 'react-bootstr
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useState, useEffect } from 'react';
 import api from '@services/api'
+import userService from '@services/userService'
 import { useNavigate } from 'react-router';
 
 const NavbarPrincipal = () => {
@@ -11,12 +12,12 @@ const NavbarPrincipal = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await api.get('/me');
-        setUser(response.data);
+        const response = await userService.getProfile();
+        setUser(response);
       } catch (error) {
+        console.error(error);
       }
     };
-
     fetchProfile();
   }, []);
 
@@ -39,7 +40,7 @@ const NavbarPrincipal = () => {
               <FormControl type="search" placeholder="Buscar..." className="me-2" />
               <Button variant="outline-primary">Buscar</Button>
             </Form>
-            <NavDropdown title={user && user.name} id="basic-nav-dropdown">
+            <NavDropdown title={user ? user.full_name : 'Usuario'} id="basic-nav-dropdown">
               <NavDropdown.Item onClick={logOut}><i className="bi bi-box-arrow-in-left" ></i>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
