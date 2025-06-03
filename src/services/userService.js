@@ -1,14 +1,12 @@
 import api from './api';
 
-const login = async (params) => {
-    const { data } = await api.post('login', params);
+const AUTH = 'auth'
+
+const getProfile = async () => {
+    const { data } = await api.get(`${AUTH}/me`);
     return data;
-}
-const logout = async (params) => {
-    const { data } = await api.post('logout', params);
-    return data;
-}
+};
 
 export default {
-    login, logout
+    getProfile
 };

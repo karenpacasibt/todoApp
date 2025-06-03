@@ -1,7 +1,9 @@
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Login from '@components/Login'
+import Login from './components/auth/Login'
+import Register from './components/auth/Register'
 import MainLayout from '@components/layouts/MainLayout'
+import ProfilePage from './components/pages/users/ProfilePage'
 import Task from '@tasks/ListPage'
 import TaskForm from '@tasks/FormPage'
 import TaskShow from '@tasks/ShowPage'
@@ -20,8 +22,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login />} />
-          <Route path='/me' element={<MainLayout />} />
+          <Route path='/register' element={<Register />} />
           <Route element={<MainLayout />}>
+            <Route path='/profile' element={<ProfilePage />} />
             <Route path="/category" element={<Category />} />
             <Route path="/category/create" element={<CategoryForm />} />
             <Route path="/category/edit/:id" element={<CategoryForm />} />

@@ -1,6 +1,6 @@
 import api from './api';
 
-const CATEGORY_ROUTE = 'category';
+const CATEGORY_ROUTE = 'categories';
 
 const getAll = async (page = 1) => {
     const { data } = await api.get(`${CATEGORY_ROUTE}?page=${page}`);

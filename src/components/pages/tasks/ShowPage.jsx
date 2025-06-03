@@ -34,7 +34,7 @@ export default function ShowPage() {
     if (loading) return <p className="text-center mt-5">Cargando...</p>;
     if (!task) return <p className="text-center text-danger">No se encontró la tarea.</p>;
 
-    const categoryName = categories.find(c => c.id === task.id_category)?.name || 'Desconocida';
+    const categoryName = categories.find(c => c.id === task.category_id)?.name || 'Desconocida';
     const tagNames = task.tags?.map(tag => tag.name).join(', ') || 'Sin etiquetas';
 
     return (

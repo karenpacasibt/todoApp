@@ -1,6 +1,6 @@
 import api from './api';
 
-const TAG_ROUTE = 'tag';
+const TAG_ROUTE = 'tags';
 
 const getAll = async (page = 1) => {
     const { data } = await api.get(`${TAG_ROUTE}?page=${page}`);

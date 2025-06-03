@@ -1,6 +1,6 @@
 import api from './api';
 
-const TASK_ROUTE = 'task';
+const TASK_ROUTE = 'tasks';
 
 const getAll = async (page = 1) => {
     const { data } = await api.get(`${TASK_ROUTE}?page=${page}`);

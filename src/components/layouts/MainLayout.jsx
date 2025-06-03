@@ -11,7 +11,7 @@ export default function MainLayout() {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await api.get('/me');
+                const response = await api.get('/auth/me');
                 setUser(response.data);
             } catch (error) {
             }
